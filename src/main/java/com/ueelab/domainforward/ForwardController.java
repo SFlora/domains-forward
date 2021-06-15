@@ -1,7 +1,10 @@
 package com.ueelab.domainforward;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,8 +28,8 @@ public class ForwardController {
     @GetMapping("/")
     public void home(HttpServletRequest request, HttpServletResponse response) throws IOException {
         URL url = new URL(request.getRequestURL().toString());
-        System.out.println(url.getHost());
         File file = new File(resourcesPath + url.getHost() + ".png");
+        if (!file.exists()) return;
         InputStream inputStream = new FileInputStream(file);
         OutputStream outputStream = response.getOutputStream();
         inputStream.transferTo(outputStream);
