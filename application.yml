@@ -1,3 +1,7 @@
 server:
   port: 80
-resources-path: 
+spring:
+  mvc:
+    servlet:
+      load-on-startup: 1
+resources-path: resources
