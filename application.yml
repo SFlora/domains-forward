@@ -1,7 +1,15 @@
+security:
+  require-ssl: true
 server:
-  port: 80
+  port: 443
+  ssl:
+    key-store: 
+    key-store-password: 
+    keyStoreType: PKCS12
+    keyAlias: 
 spring:
   mvc:
     servlet:
       load-on-startup: 1
 resources-path: resources
+
