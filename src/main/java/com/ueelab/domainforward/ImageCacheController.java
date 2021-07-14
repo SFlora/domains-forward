@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -23,12 +22,20 @@ public class ImageCacheController {
     private String resourcesPath;
     
     @GetMapping("/")
-    public void home(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        URL url = new URL(request.getRequestURL().toString());
-        try (InputStream inputStream = Files.newInputStream(Path.of(resourcesPath + "/" + url.getHost() + ".png"));
+    public void home(HttpServletRequest request, HttpServletResponse response) {
+        String domain;
+        try {
+            URL url = new URL(request.getRequestURL().toString());
+            String[] split = url.getHost().split("\\.");
+            domain = split[split.length - 2] + '.' + split[split.length - 1];
+        } catch (Exception e) {
+            return;
+        }
+        try (InputStream inputStream = Files.newInputStream(Path.of(resourcesPath + "/" + domain + ".png"));
              OutputStream outputStream = response.getOutputStream()) {
             inputStream.transferTo(outputStream);
             response.setContentType("image/png");
+        } catch (Exception ignored) {
         }
     }
     
