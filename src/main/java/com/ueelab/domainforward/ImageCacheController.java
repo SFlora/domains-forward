@@ -1,6 +1,7 @@
 package com.ueelab.domainforward;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -34,7 +35,7 @@ public class ImageCacheController {
         try (InputStream inputStream = Files.newInputStream(Path.of(resourcesPath + "/" + domain + ".png"));
              OutputStream outputStream = response.getOutputStream()) {
             inputStream.transferTo(outputStream);
-            response.setContentType("image/png");
+            response.setContentType(MediaType.IMAGE_PNG_VALUE);
         } catch (Exception ignored) {
         }
     }
