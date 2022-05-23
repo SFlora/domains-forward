@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author ueelab
  */
 @SpringBootApplication
-public class DomainForwardApplication {
+public class Application {
     
     public static void main(String[] args) {
-        SpringApplication.run(DomainForwardApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
     
 }
