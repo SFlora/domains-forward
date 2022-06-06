@@ -24,7 +24,7 @@ public class ImageController {
     @Value("${resources-path}")
     private String resourcesPath;
     
-    @GetMapping("/")
+    @GetMapping("")
     public Mono<Void> getImage(ServerHttpRequest request, ServerHttpResponse response) {
         String[] hostSplit = request.getURI().getHost().split("\\.");
         String domain = hostSplit[hostSplit.length - 2] + '.' + hostSplit[hostSplit.length - 1];

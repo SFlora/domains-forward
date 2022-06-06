@@ -6,7 +6,6 @@ import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
 import java.net.URI;
@@ -18,7 +17,7 @@ public class NettyConfig {
     public ErrorWebExceptionHandler exceptionHandler() {
         return (exchange, ex) -> {
             exchange.getResponse().setStatusCode(HttpStatus.OK);
-            return Mono.empty();
+            return exchange.getResponse().setComplete();
         };
     }
     
