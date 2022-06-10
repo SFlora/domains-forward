@@ -30,7 +30,7 @@ public class ImageController {
         String domain = hostSplit[hostSplit.length - 2] + '.' + hostSplit[hostSplit.length - 1];
         Path path = Path.of(resourcesPath + "/" + domain + ".png");
         Flux<DataBuffer> flux = DataBufferUtils.read(path, new DefaultDataBufferFactory(), StreamUtils.BUFFER_SIZE);
-        return response.writeWith(flux).doOnNext(unused -> response.getHeaders().setContentType(MediaType.IMAGE_PNG));
+        return response.writeWith(flux).doOnSuccess(unused -> response.getHeaders().setContentType(MediaType.IMAGE_PNG));
     }
     
 }
