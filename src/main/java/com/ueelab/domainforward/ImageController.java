@@ -5,11 +5,11 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.http.MediaType;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -25,12 +25,14 @@ public class ImageController {
     private String resourcesPath;
     
     @GetMapping("")
-    public Mono<Void> getImage(ServerHttpRequest request, ServerHttpResponse response) {
-        String[] hostSplit = request.getURI().getHost().split("\\.");
+    public Mono<Void> getImage(ServerWebExchange exchange) {
+        String[] hostSplit = exchange.getRequest().getURI().getHost().split("\\.");
         String domain = hostSplit[hostSplit.length - 2] + '.' + hostSplit[hostSplit.length - 1];
         Path path = Path.of(resourcesPath + "/" + domain + ".png");
-        Flux<DataBuffer> flux = DataBufferUtils.read(path, new DefaultDataBufferFactory(), StreamUtils.BUFFER_SIZE);
-        return response.writeWith(flux).doOnSuccess(unused -> response.getHeaders().setContentType(MediaType.IMAGE_PNG));
+        Flux<DataBuffer> dataBufferFlux = DataBufferUtils.read(path, new DefaultDataBufferFactory(), StreamUtils.BUFFER_SIZE);
+        ServerHttpResponse response = exchange.getResponse();
+        response.getHeaders().setContentType(MediaType.IMAGE_PNG);
+        return response.writeWith(dataBufferFlux);
     }
     
 }
