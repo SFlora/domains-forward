@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Controller;
@@ -31,7 +32,9 @@ public class ImageController {
         Path path = Path.of(resourcesPath + "/" + domain + ".png");
         Flux<DataBuffer> dataBufferFlux = DataBufferUtils.read(path, new DefaultDataBufferFactory(), StreamUtils.BUFFER_SIZE);
         ServerHttpResponse response = exchange.getResponse();
-        response.getHeaders().setContentType(MediaType.IMAGE_PNG);
+        HttpHeaders headers = response.getHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+        headers.setAccessControlAllowOrigin("*");
         return response.writeWith(dataBufferFlux);
     }
     
