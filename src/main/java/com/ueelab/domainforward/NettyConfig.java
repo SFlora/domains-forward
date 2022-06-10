@@ -34,12 +34,12 @@ public class NettyConfig {
     @SneakyThrows
     private URI newUri(URI uri) {
         return new URI("https",
-                uri.getUserInfo(),
+                null,
                 uri.getHost(),
                 443,
                 uri.getPath(),
                 uri.getQuery(),
-                uri.getFragment());
+                null);
     }
     
 }

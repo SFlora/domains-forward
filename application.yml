@@ -1,3 +1,4 @@
+security.require-ssl: true
 server:
   port: 443
   ssl:
